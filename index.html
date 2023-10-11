@@ -3021,7 +3021,7 @@
                 square = squareElements[squares % total_squares];
             }
 
-            let words = JSON.stringify(csvData[squares]['body'], null, 2).split(' ').slice(0, 45).join(' ');
+            let words = JSON.stringify(csvData[squares]['body'], null, 2).split(' ').slice(0, 40).join(' ');
             square.textContent = words.replace(/\\n/g, '\n');
 
             //console.log('made/updated square');
