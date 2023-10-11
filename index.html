@@ -20,7 +20,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.7vmin;
+            font-size: 2vmin;
             font-family: Courier, monospace;
             word-wrap: break-word;
             padding: 1vmin;
@@ -3021,7 +3021,7 @@
                 square = squareElements[squares % total_squares];
             }
 
-            let words = JSON.stringify(csvData[squares]['body'], null, 2).split(' ').slice(0, 55).join(' ');
+            let words = JSON.stringify(csvData[squares]['body'], null, 2).split(' ').slice(0, 45).join(' ');
             square.textContent = words.replace(/\\n/g, '\n');
 
             //console.log('made/updated square');
