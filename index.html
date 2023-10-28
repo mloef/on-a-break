@@ -30,6 +30,18 @@
 
 <body>
     <script>
+        let isPaused = false;
+
+        // Pause the loop when the mouse button is pressed
+        window.addEventListener('mousedown', function() {
+            isPaused = true;
+        });
+
+        // Resume the loop when the mouse button is released
+        window.addEventListener('mouseup', function() {
+            isPaused = false;
+        });
+
         const csvData = [
             {
                 "body": "Some context, we broke up over summer and he went out all the time. Now we’re back together and he says he’d rather spend time with me alone at home. I always ask, why don’t we go out tonight or stay out longer? And he says he wants to stay home with me.   \n\nWell, today I left to go visit family for Christmas. The very first thing he does the first night I’m gone is go out to bars.   I’m not even sure how to analyze my emotions about this, my gut is just telling me it’s either him not respecting my wishes, or he’s being sketchy.   \n\n\nTL;DR - boyfriend is willing to go to bars with friends, but not with me."
@@ -2991,10 +3003,15 @@
         const viewportHeight = window.innerHeight;
         const portrait = viewportHeight > viewportWidth;
         const num_squares_max = Math.ceil(Math.max(viewportWidth, viewportHeight) / Math.min(viewportWidth, viewportHeight) * num_squares_min);
-        const total_squares = num_squares_min * num_squares_max;
-        const y_squares = portrait ? num_squares_max : num_squares_min;
+        const y_squares = (portrait ? num_squares_max : num_squares_min) + 1;
         const x_squares = portrait ? num_squares_min : num_squares_max;
-
+        const total_squares = y_squares * x_squares;
+        const y_offsets = [];
+        for (var i = 0; i < x_squares; i++) {
+            y_offsets.push(100 / (y_squares - 1) * Math.random() * (i % 2? 0.25 : 1));
+        }
+        console.log(y_offsets)
+        console.log(100 / (y_squares - 1))
         //console.log(`portrait: ${portrait}, num_squares_max: ${num_squares_max}, total_squares: ${total_squares}, y_squares: ${y_squares}, x_squares: ${x_squares}`);
 
         function createSquare() {
@@ -3009,11 +3026,13 @@
                 document.body.appendChild(square);
                 squareElements.push(square);
 
+                const y_offset = y_offsets[Math.floor(squares / y_squares)];
+
                 if (portrait) {
-                    square.style.top = `${(squares % y_squares) * (100 / y_squares)}vmax`;
+                    square.style.top = `${(squares % y_squares) * (100 / (y_squares - 1)) - y_offset}vmax`;
                     square.style.left = `${Math.floor(squares / y_squares) * (100 / x_squares)}vmin`;
                 } else {
-                    square.style.top = `${(squares % y_squares) * (100 / y_squares)}vmin`;
+                    square.style.top = `${(squares % y_squares) * (100 / (y_squares - 1)) - y_offset}vmin`;
                     square.style.left = `${Math.floor(squares / y_squares) * (100 / x_squares)}vmax`;
                 }
             } else {
@@ -3029,7 +3048,7 @@
         }
 
 
-        let interval = 300;
+        var interval = 300;
         const minimum_interval = 5;
         const max_iterations = 40;
         const decreasePerIteration = (interval - minimum_interval) / max_iterations;
@@ -3037,14 +3056,16 @@
 
         async function executeLoop() {
             while (iterations < max_iterations) {
-                //console.log('main loop');
-                createSquare();
-                iterations++;
+                if (!isPaused) {
+                    //console.log('main loop');
+                    createSquare();
+                    iterations++;
 
-                if (interval > minimum_interval) {
-                    interval -= decreasePerIteration;
-                } else {
-                    interval = minimum_interval;
+                    if (interval > minimum_interval) {
+                        interval -= decreasePerIteration;
+                    } else {
+                        interval = minimum_interval;
+                    }
                 }
 
                 await new Promise(resolve => setTimeout(resolve, interval));
@@ -3052,8 +3073,10 @@
 
             // If you want the loop to continue indefinitely at the minimum interval
             while (true) {
-                //console.log('secondary loop');
-                createSquare();
+                if (!isPaused) {
+                    //console.log('secondary loop');
+                    createSquare();
+                }
                 await new Promise(resolve => setTimeout(resolve, minimum_interval));
             }
         }
