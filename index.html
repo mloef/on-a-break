@@ -42,6 +42,16 @@
             isPaused = false;
         });
 
+        // Pause the loop when the mouse button is pressed
+        window.addEventListener('touchstart', function() {
+            isPaused = true;
+        });
+
+        // Resume the loop when the mouse button is released
+        window.addEventListener('touchend', function() {
+            isPaused = false;
+        });
+
         const csvData = [
             {
                 "body": "Some context, we broke up over summer and he went out all the time. Now we’re back together and he says he’d rather spend time with me alone at home. I always ask, why don’t we go out tonight or stay out longer? And he says he wants to stay home with me.   \n\nWell, today I left to go visit family for Christmas. The very first thing he does the first night I’m gone is go out to bars.   I’m not even sure how to analyze my emotions about this, my gut is just telling me it’s either him not respecting my wishes, or he’s being sketchy.   \n\n\nTL;DR - boyfriend is willing to go to bars with friends, but not with me."
