@@ -3058,10 +3058,9 @@
         }
 
 
-        var interval = 300;
+        var interval = 500;
         const minimum_interval = 5;
         const max_iterations = total_squares + y_squares;
-        const decreasePerIteration = (interval - minimum_interval) / max_iterations;
         let iterations = 0;
 
         async function executeLoop() {
@@ -3072,7 +3071,9 @@
                     iterations++;
 
                     if (interval > minimum_interval) {
-                        interval -= decreasePerIteration;
+                        const decrease = (interval - minimum_interval) / max_iterations * (4**((max_iterations-iterations)/max_iterations));
+                        interval -= decrease;
+                        if (interval < minimum_interval) { interval = minimum_interval}
                     } else {
                         interval = minimum_interval;
                     }
