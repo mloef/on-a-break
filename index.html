@@ -13,8 +13,8 @@
 
         .square {
             position: absolute;
-            width: 21vmin;
-            height: 21vmin;
+            width: 34vmin;
+            height: 34vmin;
             background-color: rgb(0,255,0);
             color: black;
             display: flex;
@@ -3006,7 +3006,7 @@
         // Reorder csvData randomly
         csvData.sort(() => Math.random() - 0.5);
 
-        const num_squares_min = 5;
+        const num_squares_min = 3;
         let squares = 0;
         let squareElements = [];
         const viewportWidth = window.innerWidth;
@@ -3050,7 +3050,7 @@
                 square = squareElements[squares % total_squares];
             }
 
-            let words = JSON.stringify(csvData[squares]['body'], null, 2).split(' ').slice(0, 40).join(' ');
+            let words = JSON.stringify(csvData[squares]['body'], null, 2).split(' ').slice(0, 115).join(' ');
             square.textContent = words.replace(/\\n/g, '\n');
 
             //console.log('made/updated square');
